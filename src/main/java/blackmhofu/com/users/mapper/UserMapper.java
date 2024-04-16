@@ -10,6 +10,7 @@ public class UserMapper {
 
         return  UserResDTO
                 .builder()
+                .id(userToConvert.getId())
                 .name(userToConvert.getName())
                 .email(userToConvert.getEmail())
                 .phoneNumber(userToConvert.getPhoneNumber())
@@ -17,7 +18,7 @@ public class UserMapper {
                 .status(userToConvert.getStatus())
                 .notes(userToConvert.getNotes())
                 .role(userToConvert.getRole())
-                .organisationName("N/A")
+                .organisationName(userToConvert.getOrganisation() != null ? userToConvert.getName() : "N/A ")
                 .build();
     }
 }

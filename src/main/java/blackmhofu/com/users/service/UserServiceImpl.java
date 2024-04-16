@@ -1,5 +1,6 @@
 package blackmhofu.com.users.service;
 
+import blackmhofu.com.organisation.model.Organisation;
 import blackmhofu.com.organisation.service.OrganisationServiceImpl;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
@@ -29,11 +30,13 @@ public class UserServiceImpl implements IUserService {
     private OrganisationServiceImpl organisationService;
 
     @Override
-    public UserResDTO saveUser(UserReqDTO userReqDTO) {
+    public UserResDTO    saveUser(UserReqDTO userReqDTO) {
 
+        Organisation foundOrganisation = null;
+        if (userReqDTO.getOrganisationId() != null) {
+            foundOrganisation = organisationService.findById(userReqDTO.getOrganisationId());
+        }
 
-
-        var foundOrganisation = organisationService.findById(userReqDTO.getOrganisationId());
 
         User userToBeSaved = User
                 .builder()
@@ -83,12 +86,12 @@ public class UserServiceImpl implements IUserService {
     public String delete(UUID userId) {
 
         User foundUser = findById(userId);
-        if(foundUser != null){
+        if (foundUser != null) {
             userRepository.deleteById(userId);
-            return  "User with id  [ %s ] Deleted Successfully ".formatted(userId);
+            return "User with id  [ %s ] Deleted Successfully ".formatted(userId.toString());
         }
 
-        return  "Failed to  delete user with id  [ %s ]".formatted(userId);
+        return "Failed to  delete user with id  [ %s ]".formatted(userId.toString());
     }
 
     @Override

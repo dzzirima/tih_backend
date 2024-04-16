@@ -1,9 +1,6 @@
-package blackmhofu.com.users.model;
-
+package blackmhofu.com.steptemplate.model;
 
 import blackmhofu.com.organisation.model.Organisation;
-import blackmhofu.com.users.type.UserRole;
-import blackmhofu.com.users.type.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Builder
-public class User {
+public class StepTemplate {
 
     @Id
     @GeneratedValue(
@@ -25,20 +22,22 @@ public class User {
             generator = "UUID"
     )
     private UUID id;
-    private String name;
 
-    @Column(
-            unique = true
-    )
-    private String email;
-    private String password;
-    private String phoneNumber;
-    private String address;
-    private UserStatus status;
-    private String notes;
-    private UserRole role;
+    private  String name;
+
+    private Integer numberOfSteps;
+
+    private String description;
+
+    // to which organisation does it belong to:
 
     @ManyToOne
     private Organisation organisation;
+
+    private Boolean isDefault;  // global default;
+
+    private  Boolean isCompanyDefault; // default for the company
+
+    private String notes;
 
 }
