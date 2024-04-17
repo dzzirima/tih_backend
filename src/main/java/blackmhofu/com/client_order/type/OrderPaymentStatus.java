@@ -1,4 +1,4 @@
-package blackmhofu.com.order.type;
+package blackmhofu.com.client_order.type;
 
 public enum OrderPaymentStatus {
     PENDING,

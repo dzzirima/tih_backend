@@ -1,7 +1,7 @@
-package blackmhofu.com.order.mapper;
+package blackmhofu.com.client_order.mapper;
 
-import blackmhofu.com.order.dto.ClientOrderResDto;
-import blackmhofu.com.order.model.ClientOrder;
+import blackmhofu.com.client_order.dto.ClientOrderResDto;
+import blackmhofu.com.client_order.model.ClientOrder;
 import org.springframework.stereotype.Component;
 
 @Component

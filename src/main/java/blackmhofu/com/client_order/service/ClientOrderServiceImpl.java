@@ -1,11 +1,11 @@
-package blackmhofu.com.order.service;
+package blackmhofu.com.client_order.service;
 
-import blackmhofu.com.order.dto.ClientOrderReqDto;
-import blackmhofu.com.order.dto.ClientOrderResDto;
-import blackmhofu.com.order.dto.ClientOrderUpdateReqDto;
-import blackmhofu.com.order.mapper.OrderMapper;
-import blackmhofu.com.order.model.ClientOrder;
-import blackmhofu.com.order.repository.ClientOrderRepository;
+import blackmhofu.com.client_order.dto.ClientOrderReqDto;
+import blackmhofu.com.client_order.dto.ClientOrderResDto;
+import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
+import blackmhofu.com.client_order.mapper.OrderMapper;
+import blackmhofu.com.client_order.model.ClientOrder;
+import blackmhofu.com.client_order.repository.ClientOrderRepository;
 import blackmhofu.com.organisation.model.Organisation;
 import blackmhofu.com.organisation.service.OrganisationServiceImpl;
 import blackmhofu.com.steptemplate.model.StepTemplate;
@@ -93,16 +93,26 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
     @Override
     public String delete(UUID clientOrderId) {
-        return null;
+
+        ClientOrder foundClientOrder = findById(clientOrderId);
+
+        if(foundClientOrder!=null){
+            clientOrderRepository.deleteById(clientOrderId);
+            return "Client order with id [ %s ] was deleted successfully " .formatted(clientOrderId);
+        }
+        return "Error while deleting client order ";
     }
 
     @Override
     public List<ClientOrderResDto> findByClientId(UUID clientId) {
-        return null;
+
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
+        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 
     @Override
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId) {
-        return null;
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
+        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 }

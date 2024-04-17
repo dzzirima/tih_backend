@@ -1,10 +1,9 @@
-package blackmhofu.com.order.model;
+package blackmhofu.com.client_order.model;
 
 
-import blackmhofu.com.order.type.GlobalStep;
-import blackmhofu.com.order.type.OrderPaymentStatus;
+import blackmhofu.com.client_order.type.GlobalStep;
+import blackmhofu.com.client_order.type.OrderPaymentStatus;
 import blackmhofu.com.organisation.model.Organisation;
-import blackmhofu.com.organisation.type.PaymentStatus;
 import blackmhofu.com.steptemplate.model.StepTemplate;
 import blackmhofu.com.users.model.User;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
-package blackmhofu.com.order.dto;
+package blackmhofu.com.client_order.dto;
 
-import blackmhofu.com.order.type.GlobalStep;
-import blackmhofu.com.order.type.OrderPaymentStatus;
+import blackmhofu.com.client_order.type.GlobalStep;
+import blackmhofu.com.client_order.type.OrderPaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

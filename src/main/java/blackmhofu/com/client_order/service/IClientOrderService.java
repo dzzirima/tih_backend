@@ -1,9 +1,9 @@
-package blackmhofu.com.order.service;
+package blackmhofu.com.client_order.service;
 
-import blackmhofu.com.order.dto.ClientOrderReqDto;
-import blackmhofu.com.order.dto.ClientOrderResDto;
-import blackmhofu.com.order.dto.ClientOrderUpdateReqDto;
-import blackmhofu.com.order.model.ClientOrder;
+import blackmhofu.com.client_order.dto.ClientOrderReqDto;
+import blackmhofu.com.client_order.dto.ClientOrderResDto;
+import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
+import blackmhofu.com.client_order.model.ClientOrder;
 
 import java.util.List;
 import java.util.UUID;

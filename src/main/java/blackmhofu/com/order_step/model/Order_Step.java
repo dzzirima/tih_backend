@@ -2,7 +2,7 @@ package blackmhofu.com.order_step.model;
 
 
 //import blackmhofu.com.order.model.Order;
-import blackmhofu.com.order.model.ClientOrder;
+import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.step.model.Step;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -29,11 +29,7 @@ public class Media {
     )
     private UUID id;
     private String name;
-    private Integer size;
-
-
-
-
+    private Long size;
 
     @CreationTimestamp
     @Column(
@@ -51,10 +47,7 @@ public class Media {
     @Embedded
     private Executor executor;
 
-
     @ManyToOne
     private Order_Step order_step;
-
-
 
 }
