@@ -28,7 +28,6 @@ import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 @RequestMapping("/api/v1/media")
 public class MediaController {
 
-
     @Autowired
     private MediaServiceImpl mediaService;
 

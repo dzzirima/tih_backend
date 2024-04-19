@@ -113,7 +113,7 @@ public class MediaServiceImpl implements IMediaService {
 
     @Override
     public List<Media> findAllByStepOrderId(UUID stepOrderId) {
-        return  mediaRepository.findMediaByOrder_step_Id(stepOrderId);
+        return  mediaRepository.findMediaByOrderStep(stepOrderId);
     }
 
 }
