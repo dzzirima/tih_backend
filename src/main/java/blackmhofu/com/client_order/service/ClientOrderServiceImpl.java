@@ -112,7 +112,7 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
     @Override
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId) {
-        List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findClientOrderByOrganisationId(organisationId);
         return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 }

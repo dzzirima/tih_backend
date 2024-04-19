@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 public class ClientOrderResDto {
 
-    UUID orderId;
+    UUID id;
     int currentStep;
     GlobalStep globalStep;
     OrderPaymentStatus orderPaymentStatus;

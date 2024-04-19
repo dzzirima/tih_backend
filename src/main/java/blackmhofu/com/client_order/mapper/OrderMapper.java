@@ -13,6 +13,7 @@ public class OrderMapper {
 
         return  ClientOrderResDto
                 .builder()
+                .id(clientOrder.getId())
                 .currentStep(clientOrder.getCurrentStep())
                 .globalStep(clientOrder.getGlobalStep())
                 .customerName(clientOrder.getCustomer().getName())

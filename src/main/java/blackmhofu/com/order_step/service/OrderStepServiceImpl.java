@@ -42,8 +42,7 @@ public class OrderStepServiceImpl implements  IOrderStepService {
 
         ClientOrder foundClientOrder = clientOrderService.findById(orderStepReqDto.getOrderId());
         Step foundStep = stepService.findById(orderStepReqDto.getStepId());
-
-
+        
         Order_Step orderStepToSave = Order_Step
                 .builder()
                 .order(foundClientOrder)
@@ -57,7 +56,6 @@ public class OrderStepServiceImpl implements  IOrderStepService {
         if(!orderStepReqDto.getAttachedMediaIdsList().isEmpty()){
 
             String[] mediaIdArray = orderStepReqDto.getAttachedMediaIdsList().split(",");
-
 
             // then for each id then lets get the corresponding id in db
 

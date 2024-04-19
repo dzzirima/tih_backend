@@ -11,6 +11,7 @@ public class MediaMapper {
         return  MediaResDto
                 .builder()
                 .size(media.getSize())
+                .id(media.getId())
                 .name(media.getName())
                 .executor("N/A")
                 .order_step(2)

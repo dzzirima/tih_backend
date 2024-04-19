@@ -16,5 +16,4 @@ public class OrderStepReqDto {
     UUID stepId;
     String description;
     String attachedMediaIdsList;
-
 }
