@@ -36,7 +36,7 @@ public class StepTemplateServiceImpl implements IStepTemplateService {
         StepTemplate stepTemplateToSave = StepTemplate
                 .builder()
                 .isCompanyDefault(stepTemplateReqDTO.isCompanyDefault())
-                .isDefault(stepTemplateReqDTO.isDefault())
+                .isDefault(stepTemplateReqDTO.isSystemDefault())
                 .numberOfSteps(stepTemplateReqDTO.getNumberOfSteps())
                 .organisation(foundOrganisation)
                 .description(stepTemplateReqDTO.getDescription())
@@ -85,7 +85,7 @@ public class StepTemplateServiceImpl implements IStepTemplateService {
     }
 
     @Override
-    public List<StepTemplateResDTO> findAllByCompanyId(UUID companyId) {
+    public List<StepTemplateResDTO> findAllByOrganisationId(UUID companyId) {
 
         List<StepTemplate> foundStepTemplate = stepServiceRepository.findStepTemplateByOrganisation_Id(companyId);
 

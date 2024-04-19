@@ -16,6 +16,6 @@ public interface IStepTemplateService {
     public String Update(StepTemplateUpdateDto stepTemplateUpdateDto);
     public String delete(UUID stepTemplateId);
     public  List<StepTemplateResDTO> findAll();
-    public List<StepTemplateResDTO> findAllByCompanyId(UUID companyId);
+    public List<StepTemplateResDTO> findAllByOrganisationId(UUID companyId);
 
 }

@@ -18,8 +18,8 @@ public class StepTemplateReqDTO {
     private int numberOfSteps;
     private  String name;
     private String description;
+    private  boolean companyDefault;
+    private boolean systemDefault;
 
-    private  boolean isCompanyDefault;
-    private boolean isDefault;
 
 }
