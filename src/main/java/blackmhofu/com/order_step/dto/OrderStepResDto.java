@@ -19,4 +19,6 @@ public class OrderStepResDto {
     LocalDateTime createdAt;
     String description;
 
+    String mediaList;
+
 }
