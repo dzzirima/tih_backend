@@ -3,6 +3,7 @@ package blackmhofu.com.client_order.controller;
 
 import blackmhofu.com.client_order.dto.ClientOrderReqDto;
 import blackmhofu.com.client_order.dto.ClientOrderResDto;
+import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
 import blackmhofu.com.client_order.service.ClientOrderServiceImpl;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
@@ -30,7 +31,6 @@ public class ClientOrderController {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
         }
     }
-
     @GetMapping("/{clientOrderId}")
     public ResponseEntity<?> findClientOrderById(
             @PathVariable UUID clientOrderId
@@ -42,7 +42,17 @@ public class ClientOrderController {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
         }
     }
-
+    @PatchMapping()
+    public ResponseEntity<?> upDateClientOrder(
+            @RequestBody ClientOrderUpdateReqDto clientOrderUpdateReqDto
+            ) {
+        try {
+            String updateRes  = clientOrderService.upDate(clientOrderUpdateReqDto);
+            return ResponseHandler.generateResponse(updateRes, HttpStatus.CREATED, null, 1, true);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
+        }
+    }
     @GetMapping("/by-organisation-id/{organisationId}")
     public ResponseEntity<?> findClientOrderByOrganisationId(
             @PathVariable UUID organisationId

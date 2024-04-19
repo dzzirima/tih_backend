@@ -77,6 +77,13 @@ public class StepServiceImpl implements IStepService {
     }
 
     @Override
+    public Step findByTemplateIdAndStepNumber(UUID templateId, Integer stepNumber) {
+        Step foundStep = stepRepository.findByTemplateIdAndStepNumber(templateId, stepNumber).orElseThrow(() -> new ResourceNotFoundException("Step not found  with id  [ %s ]".formatted(templateId)));
+
+        return  foundStep;
+    }
+
+    @Override
     public String delete(UUID stepNumber) {
 
         Step foundStep = findById(stepNumber);

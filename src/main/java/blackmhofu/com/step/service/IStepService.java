@@ -15,6 +15,7 @@ public interface IStepService {
     public StepResDTO findById(String stepId);
 
     public  List<StepResDTO> findAllByTemplateId(UUID templateId);
+    public  Step findByTemplateIdAndStepNumber(UUID templateId , Integer stepNumber);
 
     public  String  delete( UUID stepNumber);
 

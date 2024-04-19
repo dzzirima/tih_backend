@@ -10,7 +10,8 @@ public class OrderStepMapper {
     public OrderStepResDto toDto(Order_Step orderStep){
         return OrderStepResDto
                 .builder()
-                .orderId(orderStep.getId())
+                .id(orderStep.getId())
+                .createdAt(orderStep.getOrder().getCreatedAt())
                 .stepNumber(orderStep.getStep().getStepNumber())
                 .description(orderStep.getDescription())
                 .build();

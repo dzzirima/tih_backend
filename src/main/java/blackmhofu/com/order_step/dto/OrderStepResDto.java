@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -13,8 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderStepResDto {
-    UUID orderId;
+    UUID id;
     int  stepNumber;
+    LocalDateTime createdAt;
     String description;
 
 }

@@ -17,10 +17,12 @@ import java.util.UUID;
 public class ClientOrderUpdateReqDto {
 
     UUID orderId;
-    int currentStep;
+    Integer currentStep; // this  should be updated only via creation of order_step
     GlobalStep globalStep;
     OrderPaymentStatus orderPaymentStatus;
-    UUID stepTemplateId;
+//    UUID stepTemplateId;
     String address;
     String description;
+    String phoneNumber;
+    String  attachedMediaIdsList;
 }

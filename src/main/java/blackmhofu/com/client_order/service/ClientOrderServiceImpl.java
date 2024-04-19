@@ -6,8 +6,12 @@ import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
 import blackmhofu.com.client_order.mapper.OrderMapper;
 import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.repository.ClientOrderRepository;
+import blackmhofu.com.order_step.dto.OrderStepReqDto;
+import blackmhofu.com.order_step.service.OrderStepServiceImpl;
 import blackmhofu.com.organisation.model.Organisation;
 import blackmhofu.com.organisation.service.OrganisationServiceImpl;
+import blackmhofu.com.step.model.Step;
+import blackmhofu.com.step.service.StepServiceImpl;
 import blackmhofu.com.steptemplate.model.StepTemplate;
 import blackmhofu.com.steptemplate.service.StepTemplateServiceImpl;
 import blackmhofu.com.users.model.User;
@@ -35,6 +39,13 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private StepServiceImpl stepService;
+
+
+    @Autowired
+    private OrderStepServiceImpl orderStepService;
 
 
     @Override
@@ -87,8 +98,69 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     }
 
     @Override
-    public String upDate(ClientOrderUpdateReqDto clientOrderUpdateTeqDto) {
-        return null;
+    public String upDate(ClientOrderUpdateReqDto clientOrderUpdateReqDto) {
+
+
+        ClientOrder foundClientOrder = findById(clientOrderUpdateReqDto.getOrderId());
+
+        boolean changes = false;
+
+        if(clientOrderUpdateReqDto.getGlobalStep() != null && clientOrderUpdateReqDto.getGlobalStep() != foundClientOrder.getGlobalStep()){
+            foundClientOrder.setGlobalStep(clientOrderUpdateReqDto.getGlobalStep());
+            changes = true;
+        }
+
+        if(clientOrderUpdateReqDto.getOrderPaymentStatus() != null && clientOrderUpdateReqDto.getOrderPaymentStatus() != foundClientOrder.getOrderPaymentStatus()){
+            foundClientOrder.setOrderPaymentStatus(clientOrderUpdateReqDto.getOrderPaymentStatus());
+            changes = true;
+        }
+
+        if(clientOrderUpdateReqDto.getPhoneNumber() != null && !clientOrderUpdateReqDto.getPhoneNumber().equals(foundClientOrder.getPhoneNumber())){
+            foundClientOrder.setPhoneNumber(clientOrderUpdateReqDto.getPhoneNumber());
+            changes = true;
+        }
+        if(clientOrderUpdateReqDto.getAddress() != null && !clientOrderUpdateReqDto.getAddress().equals(foundClientOrder.getAddress())){
+            foundClientOrder.setAddress(clientOrderUpdateReqDto.getAddress());
+            changes = true;
+        }
+        if(clientOrderUpdateReqDto.getDescription() != null && !clientOrderUpdateReqDto.getDescription().equals(foundClientOrder.getDescription())){
+            foundClientOrder.setDescription(clientOrderUpdateReqDto.getDescription());
+            changes = true;
+        }
+
+
+        //TODO  transaction after all checks are checked
+
+        if(clientOrderUpdateReqDto.getCurrentStep() != null){
+            foundClientOrder.setCurrentStep(clientOrderUpdateReqDto.getCurrentStep());
+
+            // it means we want to move to new step
+
+            Step foundStep = stepService.findByTemplateIdAndStepNumber(foundClientOrder.getStepTemplate().getId() , clientOrderUpdateReqDto.getCurrentStep());
+
+            // create the order step specific to an order
+
+            OrderStepReqDto orderStepReqDto = OrderStepReqDto
+                    .builder()
+                    .stepId(foundStep.getId())
+                    .orderId(foundClientOrder.getId())
+                    .attachedMediaIdsList(clientOrderUpdateReqDto.getAttachedMediaIdsList())
+                    .build();
+
+            orderStepService.save(orderStepReqDto);
+            changes = true;
+        }
+
+        if(changes){
+            ClientOrder clientOrderWithUpdates = clientOrderRepository.save(foundClientOrder);
+            return  "Order with id [ %s ] was successfully updated".formatted(clientOrderWithUpdates.getId());
+        }
+
+
+        // updating when we change the template steps
+
+
+        return  "No changes were made .";
     }
 
     @Override
