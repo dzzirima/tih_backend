@@ -1,4 +1,6 @@
 package blackmhofu.com.users.controller;
+import blackmhofu.com.auth.dto.LoginReq;
+import blackmhofu.com.auth.dto.LoginRes;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.service.UserServiceImpl;
@@ -22,7 +24,7 @@ public class UserController {
     private UserServiceImpl userService;
 
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Object> createUser(@RequestBody UserReqDTO userReqDTO) {
 
         try {
@@ -73,6 +75,36 @@ public class UserController {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 1, true);
 
         }
+    }
+
+
+    // Authentication of users
+    @PostMapping("/signin")
+    public ResponseEntity<?>  authLoginController (
+            @RequestBody LoginReq loginReq
+    ){
+        try {
+
+
+            LoginRes loginRes = userService.login(loginReq);
+            return ResponseHandler.generateResponse(
+                    "login successfully" ,
+                    HttpStatus.OK ,
+                    loginRes ,
+                    0,
+                    true
+            );
+        }catch (Exception e){
+            System.out.println(e.toString());
+            return ResponseHandler.generateResponse(
+                    e.getMessage() ,
+                    HttpStatus.UNAUTHORIZED ,
+                    null,
+                    0,
+                    false
+            );
+        }
+
     }
 
 

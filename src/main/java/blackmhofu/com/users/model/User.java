@@ -40,6 +40,7 @@ public class User {
     private UserStatus status;
     private String notes;
     private UserRole role;
+    private String roles;
 
     @ManyToOne
     private Organisation organisation;

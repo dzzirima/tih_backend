@@ -1,5 +1,8 @@
 package blackmhofu.com.users.service;
 
+import blackmhofu.com.auth.dto.LoginReq;
+import blackmhofu.com.auth.dto.LoginRes;
+import blackmhofu.com.auth.service.JwtService;
 import blackmhofu.com.organisation.model.Organisation;
 import blackmhofu.com.organisation.service.OrganisationServiceImpl;
 import blackmhofu.com.users.dto.UserReqDTO;
@@ -10,6 +13,11 @@ import blackmhofu.com.users.model.User;
 import blackmhofu.com.users.repository.UserRepository;
 import blackmhofu.com.utils.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +37,17 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private OrganisationServiceImpl organisationService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+
     @Override
     public UserResDTO    saveUser(UserReqDTO userReqDTO) {
 
@@ -42,7 +61,7 @@ public class UserServiceImpl implements IUserService {
                 .builder()
                 .email(userReqDTO.getEmail())
                 .name(userReqDTO.getName())
-                .password(userReqDTO.getPassword()) // needs hashing
+                .password(passwordEncoder.encode(userReqDTO.getPassword()))
                 .phoneNumber(userReqDTO.getPhoneNumber())
                 .address(userReqDTO.getAddress())
                 .status(userReqDTO.getStatus())
@@ -107,6 +126,30 @@ public class UserServiceImpl implements IUserService {
         List<User> userList = userRepository.findByOrganisationId(organisationId);
         List<UserResDTO> collect = userList.stream().map(user -> userMapper.toDTO(user)).collect(Collectors.toList());
         return (ArrayList<UserResDTO>) collect;
+
+    }
+
+    @Override
+    public LoginRes login(LoginReq loginReq) {
+
+//        System.out.println(loginReq.toString());
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getUserName(), loginReq.getPassword()));
+        if (authentication.isAuthenticated()) {
+
+            // get the user profile and user details
+            User foundUser = findByEmail(loginReq.getUserName());
+
+            UserResDTO userResDTO = userMapper.toDTO(foundUser);
+
+            var token =  jwtService.generateToken(loginReq.getUserName() ,userResDTO);
+            return  LoginRes.builder()
+                    .token(token)
+                    .build();
+
+        } else {
+            throw new UsernameNotFoundException("invalid user request !");
+        }
 
     }
 }

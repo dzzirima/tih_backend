@@ -1,5 +1,7 @@
 package blackmhofu.com.users.service;
 
+import blackmhofu.com.auth.dto.LoginReq;
+import blackmhofu.com.auth.dto.LoginRes;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.dto.UserUpdateReqDTO;
@@ -23,4 +25,7 @@ public interface IUserService {
     public ArrayList<UserResDTO> findAll();
 
     ArrayList<UserResDTO> findByOrganisationId(UUID organisationId);
+
+
+    public LoginRes login(LoginReq loginReq);
 }
