@@ -31,17 +31,32 @@ public class ClientOrderController {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
         }
     }
-    @GetMapping("/{clientOrderId}")
-    public ResponseEntity<?> findClientOrderById(
-            @PathVariable UUID clientOrderId
-            ) {
+
+    @GetMapping
+    public ResponseEntity<?> findAll(
+
+    ) {
         try {
-            ClientOrderResDto clientOrderRes = clientOrderService.findById(clientOrderId.toString());
-            return ResponseHandler.generateResponse("ClientOrder found  ", HttpStatus.CREATED, clientOrderRes, 1, true);
+            List<ClientOrderResDto> allOrders = clientOrderService.findAll();
+            return ResponseHandler.generateResponse("ClientOrder found  ", HttpStatus.CREATED, allOrders, 1, true);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
         }
     }
+
+
+    @GetMapping("byId/{orderId}")
+    public ResponseEntity<?> findClientOrderById(
+            @PathVariable UUID orderId
+            ) {
+        try {
+            ClientOrderResDto clientOrderRes = clientOrderService.findById(orderId.toString());
+            return ResponseHandler.generateResponse("Order found  ", HttpStatus.CREATED, clientOrderRes, 1, true);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
+        }
+    }
+
     @PatchMapping()
     public ResponseEntity<?> upDateClientOrder(
             @RequestBody ClientOrderUpdateReqDto clientOrderUpdateReqDto

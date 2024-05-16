@@ -29,8 +29,8 @@ public class OrderMapper {
 
     public ClientOrderResDto toDto(ClientOrder clientOrder){
 
-        List<StepResDTO> templateSteps = stepService.findAllByTemplateId(clientOrder.getStepTemplate().getId());
-        List<OrderStepResDto> currentSteps = orderStepService.findAllByOrderId(clientOrder.getId());
+//        List<StepResDTO> templateSteps = stepService.findAllByTemplateId(clientOrder.getStepTemplate().getId());
+//        List<OrderStepResDto> currentSteps = orderStepService.findAllByOrderId(clientOrder.getId());
 
 
         return  ClientOrderResDto
@@ -38,14 +38,16 @@ public class OrderMapper {
                 .id(clientOrder.getId())
                 .currentStep(clientOrder.getCurrentStep())
                 .globalStep(clientOrder.getGlobalStep())
-                .customerName(clientOrder.getCustomer().getName())
+                .customerName(clientOrder.getCustomer()!=null ? clientOrder.getCustomer().getName() :"N/A")
                 .orderPaymentStatus(clientOrder.getOrderPaymentStatus())
-                .organisation(clientOrder.getOrganisation().getName())
-                .stepTemplateId(clientOrder.getStepTemplate().getId())
+//                .organisation(clientOrder.getOrganisation() != null ?   clientOrder.getOrganisation().getName() : "N/A")
+//                .stepTemplateId( clientOrder.getStepTemplate().getId())
                 .address(clientOrder.getAddress())
+//                .amount(clientOrder)
                 .description(clientOrder.getDescription())
-                .templateSteps(templateSteps)
-                .currentSteps(currentSteps)
+                .orderPlacedDate(clientOrder.getCreatedAt())
+//                .templateSteps(templateSteps)
+//                .currentSteps(currentSteps)
                 .build();
     }
 }

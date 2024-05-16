@@ -8,6 +8,7 @@ import blackmhofu.com.users.dto.UserUpdateReqDTO;
 import blackmhofu.com.users.model.User;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IUserService {
@@ -15,6 +16,7 @@ public interface IUserService {
     public UserResDTO saveUser(UserReqDTO userReqDTO);
 
     public User findById (UUID userId); // for linking with other tables
+    public Optional< User> findByName (String userName);
     public UserResDTO findById (String userId);  // sending to the client
     public User findByEmail (String  email);  // for authentication
 

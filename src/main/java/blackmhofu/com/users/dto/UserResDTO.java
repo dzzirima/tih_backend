@@ -24,6 +24,8 @@ public class UserResDTO {
      String notes;
      UserRole role;
 
+     double balance = 10000.01;
+
      // which org does this client belong to .
      String organisationName;
 }

@@ -22,6 +22,9 @@ public interface IClientOrderService {
 
     public  String delete(UUID clientOrderId);
 
+    public List<ClientOrderResDto> findAll();
     public List<ClientOrderResDto> findByClientId(UUID clientId);
+
+
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId);
 }

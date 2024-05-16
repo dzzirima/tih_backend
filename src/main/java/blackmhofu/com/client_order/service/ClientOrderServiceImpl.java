@@ -6,6 +6,8 @@ import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
 import blackmhofu.com.client_order.mapper.OrderMapper;
 import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.repository.ClientOrderRepository;
+import blackmhofu.com.client_order.type.GlobalStep;
+import blackmhofu.com.client_order.type.OrderPaymentStatus;
 import blackmhofu.com.order_step.dto.OrderStepReqDto;
 import blackmhofu.com.order_step.service.OrderStepServiceImpl;
 import blackmhofu.com.organisation.model.Organisation;
@@ -14,13 +16,17 @@ import blackmhofu.com.step.model.Step;
 import blackmhofu.com.step.service.StepServiceImpl;
 import blackmhofu.com.steptemplate.model.StepTemplate;
 import blackmhofu.com.steptemplate.service.StepTemplateServiceImpl;
+import blackmhofu.com.users.dto.UserReqDTO;
+import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.model.User;
 import blackmhofu.com.users.service.UserServiceImpl;
+import blackmhofu.com.users.type.UserRole;
 import blackmhofu.com.utils.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -54,25 +60,43 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
         Organisation organisation = null;
         User customer = null;
-        StepTemplate  stepTemplate= stepTemplateService.findById(clientOrderReqDto.getStepTemplateId().toString());
+
+//        StepTemplate  stepTemplate= stepTemplateService.findById(clientOrderReqDto.getStepTemplateId().toString());
+        StepTemplate  stepTemplate= null;
 
         if(clientOrderReqDto.getOrganisationId() != null){
             organisation = organisationService.findById(clientOrderReqDto.getOrganisationId());
         }
 
 
-        if(clientOrderReqDto.getCustomerId() != null){
-            customer =userService.findById(clientOrderReqDto.getCustomerId());
+        // for client first check to see if that client exists
+
+        Optional<User> customerInDb = userService.findByName(clientOrderReqDto.getClientName());
+
+        if(customerInDb.isEmpty()){
+
+            UserReqDTO reqToBeAdded = UserReqDTO
+                    .builder()
+                    .name(clientOrderReqDto.getClientName())
+                    .phoneNumber(clientOrderReqDto.getPhoneNumber())
+                    .role(UserRole.CUSTOMER)
+                    .address(clientOrderReqDto.getAddress())
+                    .email(clientOrderReqDto.getClientName()+"@gmail.com")
+                    .password("test123")
+                    .build();
+            UserResDTO userResDTO = userService.saveUser(reqToBeAdded);
+
+            customer = userService.findById(userResDTO.getId());
+        }else {
+            customer = customerInDb.get();
         }
-
-
         ClientOrder clientOrderToBeSaved = ClientOrder
                 .builder()
                 .description(clientOrderReqDto.getDescription())
                 .address(clientOrderReqDto.getAddress())
                 .currentStep(clientOrderReqDto.getCurrentStep())
-                .globalStep(clientOrderReqDto.getGlobalStep())
-                .orderPaymentStatus(clientOrderReqDto.getOrderPaymentStatus())
+                .globalStep(GlobalStep.PENDING)
+                .orderPaymentStatus(OrderPaymentStatus.PENDING)
                 .stepTemplate(stepTemplate)
                 .customer(customer)
                 .organisation(organisation)
@@ -173,6 +197,13 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
             return "Client order with id [ %s ] was deleted successfully " .formatted(clientOrderId);
         }
         return "Error while deleting client order ";
+    }
+
+    @Override
+    public List<ClientOrderResDto> findAll() {
+
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
+        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 
     @Override

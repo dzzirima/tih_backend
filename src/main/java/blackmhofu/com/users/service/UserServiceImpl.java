@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,11 @@ public class UserServiceImpl implements IUserService {
     public User findById(UUID userId) {
 
         return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with id [ %S ] not found ".formatted(userId)));
+    }
+
+    @Override
+    public Optional<User> findByName(String userName) {
+        return userRepository.findUserByName(userName);
     }
 
     @Override
