@@ -18,7 +18,7 @@ public class UserMapper {
                 .status(userToConvert.getStatus())
                 .notes(userToConvert.getNotes())
                 .role(userToConvert.getRole())
-                .organisationName(userToConvert.getOrganisation() != null ? userToConvert.getName() : "N/A ")
+
                 .build();
     }
 }

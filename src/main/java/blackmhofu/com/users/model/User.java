@@ -1,7 +1,7 @@
 package blackmhofu.com.users.model;
 
 
-import blackmhofu.com.organisation.model.Organisation;
+
 import blackmhofu.com.users.type.UserRole;
 import blackmhofu.com.users.type.UserStatus;
 import jakarta.persistence.*;
@@ -42,8 +42,6 @@ public class User {
     private UserRole role;
     private String roles;
 
-    @ManyToOne
-    private Organisation organisation;
 
 
     // timestamps

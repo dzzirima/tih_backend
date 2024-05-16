@@ -10,6 +10,5 @@ import java.util.UUID;
 
 public interface ClientOrderRepository extends JpaRepository<ClientOrder , UUID> {
 
-    @Query("select u from ClientOrder u where u.organisation.id = ?1")
-    List<ClientOrder> findClientOrderByOrganisationId(UUID organisationId);
+
 }

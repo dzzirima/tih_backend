@@ -11,6 +11,5 @@ public interface MediaRepository extends JpaRepository<Media , UUID> {
 
 
 
-    @Query("select u from Media u where u.order_step.id = ?1")
-    List<Media>  findMediaByOrderStep(UUID stepOrderIs);
+
 }

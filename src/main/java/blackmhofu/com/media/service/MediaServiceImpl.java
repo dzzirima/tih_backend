@@ -5,8 +5,7 @@ import blackmhofu.com.media.dto.MediaUpDateDto;
 import blackmhofu.com.media.mapper.MediaMapper;
 import blackmhofu.com.media.model.Media;
 import blackmhofu.com.media.repository.MediaRepository;
-import blackmhofu.com.order_step.model.Order_Step;
-import blackmhofu.com.order_step.service.OrderStepServiceImpl;
+
 import blackmhofu.com.utils.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,8 +36,7 @@ public class MediaServiceImpl implements IMediaService {
     @Autowired
     private MediaRepository mediaRepository;
 
-    @Autowired
-    private OrderStepServiceImpl orderStepService;
+
 
     // define a location
     public static final String DIRECTORY = System.getProperty("user.home") + "/Downloads/tihmedia";
@@ -90,14 +88,7 @@ public class MediaServiceImpl implements IMediaService {
 
         boolean changes = false;
 
-        if (mediaUpDateDto.getMediaStepId() != null && mediaUpDateDto.getMediaStepId() != foundMedia.getId()) {
-            Order_Step foundOrderStep = orderStepService.findById(mediaUpDateDto.getMediaStepId());
 
-            foundMedia.setOrder_step(foundOrderStep);
-
-            changes = true;
-
-        }
 
         if (changes) {
             mediaRepository.save(foundMedia);
@@ -113,7 +104,7 @@ public class MediaServiceImpl implements IMediaService {
 
     @Override
     public List<Media> findAllByStepOrderId(UUID stepOrderId) {
-        return  mediaRepository.findMediaByOrderStep(stepOrderId);
+       return  null;
     }
 
 }

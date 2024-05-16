@@ -8,14 +8,6 @@ import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.repository.ClientOrderRepository;
 import blackmhofu.com.client_order.type.GlobalStep;
 import blackmhofu.com.client_order.type.OrderPaymentStatus;
-import blackmhofu.com.order_step.dto.OrderStepReqDto;
-import blackmhofu.com.order_step.service.OrderStepServiceImpl;
-import blackmhofu.com.organisation.model.Organisation;
-import blackmhofu.com.organisation.service.OrganisationServiceImpl;
-import blackmhofu.com.step.model.Step;
-import blackmhofu.com.step.service.StepServiceImpl;
-import blackmhofu.com.steptemplate.model.StepTemplate;
-import blackmhofu.com.steptemplate.service.StepTemplateServiceImpl;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.model.User;
@@ -38,35 +30,19 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     private UserServiceImpl userService;
 
     @Autowired
-    private OrganisationServiceImpl organisationService;
-
-    @Autowired
-    private StepTemplateServiceImpl stepTemplateService;
-
-    @Autowired
     private OrderMapper orderMapper;
 
-    @Autowired
-    private StepServiceImpl stepService;
 
 
-    @Autowired
-    private OrderStepServiceImpl orderStepService;
 
 
     @Override
     public ClientOrderResDto save(ClientOrderReqDto clientOrderReqDto) {
 
 
-        Organisation organisation = null;
+
         User customer = null;
 
-//        StepTemplate  stepTemplate= stepTemplateService.findById(clientOrderReqDto.getStepTemplateId().toString());
-        StepTemplate  stepTemplate= null;
-
-        if(clientOrderReqDto.getOrganisationId() != null){
-            organisation = organisationService.findById(clientOrderReqDto.getOrganisationId());
-        }
 
 
         // for client first check to see if that client exists
@@ -97,9 +73,9 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
                 .currentStep(clientOrderReqDto.getCurrentStep())
                 .globalStep(GlobalStep.PENDING)
                 .orderPaymentStatus(OrderPaymentStatus.PENDING)
-                .stepTemplate(stepTemplate)
+
                 .customer(customer)
-                .organisation(organisation)
+
                 .build();
       ClientOrder saveClientOrder = clientOrderRepository.save(clientOrderToBeSaved);
 
@@ -153,35 +129,11 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
         }
 
 
-        //TODO  transaction after all checks are checked
-
-        if(clientOrderUpdateReqDto.getCurrentStep() != null){
-            foundClientOrder.setCurrentStep(clientOrderUpdateReqDto.getCurrentStep());
-
-            // it means we want to move to new step
-
-            Step foundStep = stepService.findByTemplateIdAndStepNumber(foundClientOrder.getStepTemplate().getId() , clientOrderUpdateReqDto.getCurrentStep());
-
-            // create the order step specific to an order
-
-            OrderStepReqDto orderStepReqDto = OrderStepReqDto
-                    .builder()
-                    .stepId(foundStep.getId())
-                    .orderId(foundClientOrder.getId())
-                    .attachedMediaIdsList(clientOrderUpdateReqDto.getAttachedMediaIdsList())
-                    .build();
-
-            orderStepService.save(orderStepReqDto);
-            changes = true;
-        }
 
         if(changes){
             ClientOrder clientOrderWithUpdates = clientOrderRepository.save(foundClientOrder);
             return  "Order with id [ %s ] was successfully updated".formatted(clientOrderWithUpdates.getId());
         }
-
-
-        // updating when we change the template steps
 
 
         return  "No changes were made .";
@@ -205,7 +157,6 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
         List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
         return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
-
     @Override
     public List<ClientOrderResDto> findByClientId(UUID clientId) {
 
@@ -215,7 +166,6 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
     @Override
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId) {
-        List<ClientOrder > foundClientOrders = clientOrderRepository.findClientOrderByOrganisationId(organisationId);
-        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
+       return null;
     }
 }

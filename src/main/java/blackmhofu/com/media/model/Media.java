@@ -2,7 +2,7 @@ package blackmhofu.com.media.model;
 
 
 
-import blackmhofu.com.order_step.model.Order_Step;
+
 import blackmhofu.com.utils.type.Executor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,7 +47,6 @@ public class Media {
     @Embedded
     private Executor executor;
 
-    @ManyToOne
-    private Order_Step order_step;
+
 
 }

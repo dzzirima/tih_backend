@@ -3,8 +3,7 @@ package blackmhofu.com.users.service;
 import blackmhofu.com.auth.dto.LoginReq;
 import blackmhofu.com.auth.dto.LoginRes;
 import blackmhofu.com.auth.service.JwtService;
-import blackmhofu.com.organisation.model.Organisation;
-import blackmhofu.com.organisation.service.OrganisationServiceImpl;
+
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.dto.UserUpdateReqDTO;
@@ -35,8 +34,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private OrganisationServiceImpl organisationService;
+
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -52,10 +50,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResDTO    saveUser(UserReqDTO userReqDTO) {
 
-        Organisation foundOrganisation = null;
-        if (userReqDTO.getOrganisationId() != null) {
-            foundOrganisation = organisationService.findById(userReqDTO.getOrganisationId());
-        }
 
 
         User userToBeSaved = User
@@ -68,7 +62,7 @@ public class UserServiceImpl implements IUserService {
                 .status(userReqDTO.getStatus())
                 .notes(userReqDTO.getNotes())
                 .role(userReqDTO.getRole())
-                .organisation(foundOrganisation)
+
                 .build();
 
         User savedUser = userRepository.save(userToBeSaved);
@@ -129,9 +123,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ArrayList<UserResDTO> findByOrganisationId(UUID organisationId) {
 
-        List<User> userList = userRepository.findByOrganisationId(organisationId);
-        List<UserResDTO> collect = userList.stream().map(user -> userMapper.toDTO(user)).collect(Collectors.toList());
-        return (ArrayList<UserResDTO>) collect;
+        return null;
 
     }
 

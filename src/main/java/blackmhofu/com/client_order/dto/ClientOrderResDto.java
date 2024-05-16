@@ -2,8 +2,7 @@ package blackmhofu.com.client_order.dto;
 
 import blackmhofu.com.client_order.type.GlobalStep;
 import blackmhofu.com.client_order.type.OrderPaymentStatus;
-import blackmhofu.com.order_step.dto.OrderStepResDto;
-import blackmhofu.com.step.dto.StepResDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +31,5 @@ public class ClientOrderResDto {
     int amount;
     LocalDateTime orderPlacedDate;
 
-    List<StepResDTO> templateSteps;
-    List<OrderStepResDto> currentSteps;
 
 }
