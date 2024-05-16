@@ -23,6 +23,7 @@ public class ClientOrderUpdateReqDto {
 //    UUID stepTemplateId;
     String address;
     String description;
+    String deliveryUpDates;
     String phoneNumber;
     String  attachedMediaIdsList;
 }

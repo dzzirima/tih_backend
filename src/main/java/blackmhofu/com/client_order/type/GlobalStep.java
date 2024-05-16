@@ -3,7 +3,11 @@ package blackmhofu.com.client_order.type;
 public enum GlobalStep {
 
     PENDING,
-    ACCEPTED,
+    CORNFIRMED,
+    PICKED,
+    IN_TRANSIT,
+    DELIVERED,
+
     PROCESSING,
-    DELIVERED
+    CANCELLED
 }

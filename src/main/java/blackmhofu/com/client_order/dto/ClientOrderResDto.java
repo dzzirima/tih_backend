@@ -3,6 +3,7 @@ package blackmhofu.com.client_order.dto;
 import blackmhofu.com.client_order.type.GlobalStep;
 import blackmhofu.com.client_order.type.OrderPaymentStatus;
 
+import blackmhofu.com.delivery_time_lines.dto.DeliveryTimeLineResDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +31,8 @@ public class ClientOrderResDto {
     String description;
     int amount;
     LocalDateTime orderPlacedDate;
+
+    List<DeliveryTimeLineResDto> deliveryTimeLines;
 
 
 }

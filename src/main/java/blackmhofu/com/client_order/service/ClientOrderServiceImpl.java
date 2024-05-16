@@ -8,6 +8,9 @@ import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.repository.ClientOrderRepository;
 import blackmhofu.com.client_order.type.GlobalStep;
 import blackmhofu.com.client_order.type.OrderPaymentStatus;
+import blackmhofu.com.delivery_time_lines.dto.DeliveryTimeLineReqDto;
+import blackmhofu.com.delivery_time_lines.dto.DeliveryTimeLineResDto;
+import blackmhofu.com.delivery_time_lines.service.DeliveryTimeLineServiceImpl;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.model.User;
@@ -32,6 +35,8 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private DeliveryTimeLineServiceImpl deliveryTimeLineService;
 
 
 
@@ -78,6 +83,19 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
                 .build();
       ClientOrder saveClientOrder = clientOrderRepository.save(clientOrderToBeSaved);
+
+
+      // create a timeline for   the delivery
+
+        DeliveryTimeLineReqDto deliveryTimeLineReqDto = DeliveryTimeLineReqDto
+                .builder()
+                .clientOrderId(saveClientOrder.getId())
+                .deliveryUpDates("Your order starts processing")
+                .globalStep(GlobalStep.PENDING)
+                .orderPaymentStatus(OrderPaymentStatus.PENDING)
+                .build();
+
+        DeliveryTimeLineResDto deliveryTimeLineResDto = deliveryTimeLineService.saveDeliveryTimeLine(deliveryTimeLineReqDto);
 
       return  orderMapper.toDto(saveClientOrder);
     }
@@ -128,11 +146,37 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
             changes = true;
         }
 
+        if(clientOrderUpdateReqDto.getDeliveryUpDates() != null){
+            changes = true ;
+        }
+
+        // those times when  we change state only
+
+
+
 
 
         if(changes){
             ClientOrder clientOrderWithUpdates = clientOrderRepository.save(foundClientOrder);
+
+
+
+
+            // perfect time for creating a timeline
+            DeliveryTimeLineReqDto deliveryTimeLineReqDto = DeliveryTimeLineReqDto
+                    .builder()
+                    .clientOrderId(foundClientOrder.getId())
+                    .deliveryUpDates(clientOrderUpdateReqDto.getDeliveryUpDates())
+                    .globalStep(clientOrderUpdateReqDto.getGlobalStep())
+                    .orderPaymentStatus(clientOrderUpdateReqDto.getOrderPaymentStatus())
+                    .build();
+
+            DeliveryTimeLineResDto deliveryTimeLineResDto = deliveryTimeLineService.saveDeliveryTimeLine(deliveryTimeLineReqDto);
+
+
             return  "Order with id [ %s ] was successfully updated".formatted(clientOrderWithUpdates.getId());
+
+            
         }
 
 
