@@ -14,11 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ClientOrderUpdateReqDto {
+public class ClientOrderBulkUpdateReqDto {
 
     UUID orderId;
-    String bulkUpdateOrderIds; // for bulk updates
-
     Integer currentStep; // this  should be updated only via creation of order_step
     GlobalStep globalStep;
     OrderPaymentStatus orderPaymentStatus;

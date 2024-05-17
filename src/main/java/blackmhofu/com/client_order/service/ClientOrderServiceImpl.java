@@ -17,6 +17,7 @@ import blackmhofu.com.users.model.User;
 import blackmhofu.com.users.service.UserServiceImpl;
 import blackmhofu.com.users.type.UserRole;
 import blackmhofu.com.utils.exceptions.ResourceNotFoundException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -211,5 +212,38 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     @Override
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId) {
        return null;
+    }
+
+    @Override
+    public String bulkUpDate(ClientOrderUpdateReqDto clientOrderUpdateTeqDto) {
+
+
+        try{
+            String rawBulkOrderIds = clientOrderUpdateTeqDto.getBulkUpdateOrderIds();
+
+            ObjectMapper mapper = new ObjectMapper();
+            String[] arrayOfStringIds = mapper.readValue(rawBulkOrderIds, String[].class);
+
+            if(arrayOfStringIds.length == 0){
+                return " No changes were made";
+            }
+
+            for (String stringOrderId : arrayOfStringIds) {
+
+                clientOrderUpdateTeqDto.setOrderId(UUID.fromString(stringOrderId)); // just set the id and reuse the logic already implemented
+
+                upDate(clientOrderUpdateTeqDto);
+            }
+
+            return "Updates we success ";
+
+
+        }catch (Exception e) {
+
+            System.out.println("Error while parsing bulkOrderIds = " + e);
+            return  e.getMessage();
+        }
+
+
     }
 }

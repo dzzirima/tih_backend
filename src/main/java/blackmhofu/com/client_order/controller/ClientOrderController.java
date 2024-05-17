@@ -8,6 +8,7 @@ import blackmhofu.com.client_order.service.ClientOrderServiceImpl;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.utils.api_response.ResponseHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,23 @@ public class ClientOrderController {
         try {
             String updateRes  = clientOrderService.upDate(clientOrderUpdateReqDto);
             return ResponseHandler.generateResponse(updateRes, HttpStatus.CREATED, null, 1, true);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
+        }
+    }
+
+    @PatchMapping("/bulkUpdate")
+    public ResponseEntity<?> BulkUpDateClientOrder(
+            @RequestBody ClientOrderUpdateReqDto clientOrderUpdateReqDto
+    ) {
+        try {
+
+
+            String updateRes  = clientOrderService.bulkUpDate(clientOrderUpdateReqDto);
+
+
+
+            return ResponseHandler.generateResponse("updateRes", HttpStatus.CREATED, null, 1, true);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
         }

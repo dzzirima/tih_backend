@@ -27,4 +27,11 @@ public interface IClientOrderService {
 
 
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId);
+
+
+    // bulk operations
+
+    public String bulkUpDate ( ClientOrderUpdateReqDto clientOrderUpdateTeqDto);
+
+
 }
