@@ -4,6 +4,7 @@ import blackmhofu.com.auth.dto.LoginReq;
 import blackmhofu.com.auth.dto.LoginRes;
 import blackmhofu.com.auth.service.JwtService;
 
+import blackmhofu.com.auth.utils.CurrentLoggedInUser;
 import blackmhofu.com.users.dto.UserReqDTO;
 import blackmhofu.com.users.dto.UserResDTO;
 import blackmhofu.com.users.dto.UserUpdateReqDTO;
@@ -46,6 +47,9 @@ public class UserServiceImpl implements IUserService {
     private PasswordEncoder passwordEncoder;
 
 
+    @Autowired
+    private CurrentLoggedInUser currentLoggedInUser;
+
 
     @Override
     public UserResDTO    saveUser(UserReqDTO userReqDTO) {
@@ -57,6 +61,7 @@ public class UserServiceImpl implements IUserService {
                 .email(userReqDTO.getEmail())
                 .name(userReqDTO.getName())
                 .password(passwordEncoder.encode(userReqDTO.getPassword()))
+
                 .phoneNumber(userReqDTO.getPhoneNumber())
                 .address(userReqDTO.getAddress())
                 .status(userReqDTO.getStatus())
@@ -68,6 +73,33 @@ public class UserServiceImpl implements IUserService {
         User savedUser = userRepository.save(userToBeSaved);
 
         return userMapper.toDTO(savedUser);
+    }
+
+    @Override
+    public UserResDTO addCustomer(UserReqDTO userReqDTO) {
+
+        User currentLoginUser = currentLoggedInUser.getCurrentLoginUser();
+
+        User userToBeSaved = User
+                .builder()
+                .email(userReqDTO.getEmail())
+                .name(userReqDTO.getName())
+                .password(passwordEncoder.encode(userReqDTO.getPassword()))
+                .whoseCustomer(currentLoginUser)
+                .phoneNumber(userReqDTO.getPhoneNumber())
+                .address(userReqDTO.getAddress())
+                .status(userReqDTO.getStatus())
+                .notes(userReqDTO.getNotes())
+                .role(userReqDTO.getRole())
+
+                .build();
+
+        User savedUser = userRepository.save(userToBeSaved);
+
+        return userMapper.toDTO(savedUser);
+
+
+
     }
 
     @Override

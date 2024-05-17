@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface IUserService {
 
     public UserResDTO saveUser(UserReqDTO userReqDTO);
+    public UserResDTO addCustomer(UserReqDTO userReqDTO);
 
     public User findById (UUID userId); // for linking with other tables
     public Optional< User> findByName (String userName);

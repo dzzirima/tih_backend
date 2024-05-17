@@ -58,4 +58,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    // to which user does this customer belong to;
+    @ManyToOne
+    private User whoseCustomer ;
+
 }

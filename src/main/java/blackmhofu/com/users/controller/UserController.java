@@ -37,6 +37,19 @@ public class UserController {
 
     }
 
+    @PostMapping("/addCustomer")
+    public ResponseEntity<Object> addCustomer(@RequestBody UserReqDTO userReqDTO) {
+
+        try {
+            UserResDTO savedUser = userService.addCustomer(userReqDTO);
+            return ResponseHandler.generateResponse("Customer successfully saved ", HttpStatus.CREATED, savedUser, 1, true);
+        } catch (Exception e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 1, true);
+
+        }
+
+    }
+
 
     @GetMapping("/{userId}")
     public ResponseEntity<Object> findUserById(@PathVariable UUID userId) {
