@@ -1,5 +1,6 @@
 package blackmhofu.com.client_order.service;
 
+import blackmhofu.com.auth.utils.CurrentLoggedInUser;
 import blackmhofu.com.client_order.dto.ClientOrderReqDto;
 import blackmhofu.com.client_order.dto.ClientOrderResDto;
 import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
@@ -41,10 +42,17 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     private DeliveryTimeLineServiceImpl deliveryTimeLineService;
 
 
+    @Autowired
+    private CurrentLoggedInUser currentLoggedInUser;
+
+
 
 
     @Override
     public ClientOrderResDto save(ClientOrderReqDto clientOrderReqDto) {
+
+
+      User currentSessionUser =   currentLoggedInUser.getCurrentLoginUser();
 
 
 
@@ -80,7 +88,7 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
                 .currentStep(clientOrderReqDto.getCurrentStep())
                 .globalStep(GlobalStep.PENDING)
                 .orderPaymentStatus(OrderPaymentStatus.PENDING)
-
+                .agent(currentSessionUser)
                 .customer(customer)
 
                 .build();
@@ -230,8 +238,18 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     @Override
     public List<ClientOrderResDto> findAll() {
 
-        List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
-        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
+        User currentLoginUser = currentLoggedInUser.getCurrentLoginUser();
+
+
+        if(currentLoginUser.getRole() == UserRole.ADMIN){
+            List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
+            return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
+        }{
+            return findByAgentId(currentLoginUser.getId());
+
+        }
+
+
     }
     @Override
     public List<ClientOrderResDto> findByClientId(UUID clientId) {
@@ -243,6 +261,12 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     @Override
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId) {
        return null;
+    }
+
+    @Override
+    public List<ClientOrderResDto> findByAgentId(UUID agentId) {
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findClientOrdersByAgent_Id(agentId);
+        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 
     @Override

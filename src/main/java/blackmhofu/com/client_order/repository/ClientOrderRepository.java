@@ -10,5 +10,7 @@ import java.util.UUID;
 
 public interface ClientOrderRepository extends JpaRepository<ClientOrder , UUID> {
 
+    List<ClientOrder> findClientOrdersByAgent_Id(UUID agentId);
+
 
 }

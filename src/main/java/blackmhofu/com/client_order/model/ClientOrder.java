@@ -40,8 +40,11 @@ public class ClientOrder {
 
 
     @ManyToOne
-    private User customer;
+    private User customer; // the end customer
 
+
+    @ManyToOne
+    private User agent; // the agent our client
 
     @CreationTimestamp
     @Column(

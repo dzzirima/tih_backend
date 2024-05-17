@@ -27,7 +27,7 @@ public interface IUserService {
 
     public ArrayList<UserResDTO> findAll();
 
-    ArrayList<UserResDTO> findByOrganisationId(UUID organisationId);
+    ArrayList<UserResDTO> findByAgentId(UUID agentId); // an agent is the creator of those clients
 
 
     public LoginRes login(LoginReq loginReq);

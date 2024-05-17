@@ -11,6 +11,7 @@ import blackmhofu.com.users.dto.UserUpdateReqDTO;
 import blackmhofu.com.users.mapper.UserMapper;
 import blackmhofu.com.users.model.User;
 import blackmhofu.com.users.repository.UserRepository;
+import blackmhofu.com.users.type.UserRole;
 import blackmhofu.com.utils.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,8 +55,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResDTO    saveUser(UserReqDTO userReqDTO) {
 
-
-
         User userToBeSaved = User
                 .builder()
                 .email(userReqDTO.getEmail())
@@ -85,7 +84,7 @@ public class UserServiceImpl implements IUserService {
                 .email(userReqDTO.getEmail())
                 .name(userReqDTO.getName())
                 .password(passwordEncoder.encode(userReqDTO.getPassword()))
-                .whoseCustomer(currentLoginUser)
+                .agent(currentLoginUser)
                 .phoneNumber(userReqDTO.getPhoneNumber())
                 .address(userReqDTO.getAddress())
                 .status(userReqDTO.getStatus())
@@ -147,15 +146,23 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ArrayList<UserResDTO> findAll() {
+
+     User currentSessionUser =     currentLoggedInUser.getCurrentLoginUser();
+
+     if(currentSessionUser.getRole() != UserRole.ADMIN){
+         return  findByAgentId(currentSessionUser.getId());
+     }
+
         List<User> userList = userRepository.findAll();
         List<UserResDTO> collect = userList.stream().map(user -> userMapper.toDTO(user)).collect(Collectors.toList());
         return (ArrayList<UserResDTO>) collect;
     }
 
     @Override
-    public ArrayList<UserResDTO> findByOrganisationId(UUID organisationId) {
-
-        return null;
+    public ArrayList<UserResDTO> findByAgentId(UUID agentId) {
+        List<User> userList = userRepository.findUsersByAgent_Id(agentId);
+        List<UserResDTO> collect = userList.stream().map(user -> userMapper.toDTO(user)).collect(Collectors.toList());
+        return (ArrayList<UserResDTO>) collect;
 
     }
 

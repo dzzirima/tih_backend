@@ -28,6 +28,8 @@ public interface IClientOrderService {
 
     public List<ClientOrderResDto> findByOrganisationId(UUID organisationId);
 
+    public List<ClientOrderResDto> findByAgentId(UUID agentId);
+
 
     // bulk operations
 
