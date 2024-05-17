@@ -81,7 +81,7 @@ public class ClientOrderController {
 
 
 
-            return ResponseHandler.generateResponse("updateRes", HttpStatus.CREATED, null, 1, true);
+            return ResponseHandler.generateResponse(updateRes, HttpStatus.CREATED, null, 1, true);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null, 0, true);
         }

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -122,15 +123,31 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
         ClientOrder foundClientOrder = findById(clientOrderUpdateReqDto.getOrderId());
 
+       ArrayList<DeliveryTimeLineReqDto> deliveryTimeLineReqDtoList = new ArrayList<>();
+
+
         boolean changes = false;
 
         if(clientOrderUpdateReqDto.getGlobalStep() != null && clientOrderUpdateReqDto.getGlobalStep() != foundClientOrder.getGlobalStep()){
             foundClientOrder.setGlobalStep(clientOrderUpdateReqDto.getGlobalStep());
+
+
+            deliveryTimeLineReqDtoList.add(DeliveryTimeLineReqDto
+                    .builder()
+                    .clientOrderId(foundClientOrder.getId())
+                    .deliveryUpDates("Order : " + clientOrderUpdateReqDto.getGlobalStep())
+                    .build());
             changes = true;
         }
 
         if(clientOrderUpdateReqDto.getOrderPaymentStatus() != null && clientOrderUpdateReqDto.getOrderPaymentStatus() != foundClientOrder.getOrderPaymentStatus()){
             foundClientOrder.setOrderPaymentStatus(clientOrderUpdateReqDto.getOrderPaymentStatus());
+
+            deliveryTimeLineReqDtoList.add(DeliveryTimeLineReqDto
+                    .builder()
+                    .clientOrderId(foundClientOrder.getId())
+                    .deliveryUpDates("Order : " + clientOrderUpdateReqDto.getOrderPaymentStatus())
+                    .build());
             changes = true;
         }
 
@@ -163,16 +180,30 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
 
 
-            // perfect time for creating a timeline
-            DeliveryTimeLineReqDto deliveryTimeLineReqDto = DeliveryTimeLineReqDto
-                    .builder()
-                    .clientOrderId(foundClientOrder.getId())
-                    .deliveryUpDates(clientOrderUpdateReqDto.getDeliveryUpDates())
-                    .globalStep(clientOrderUpdateReqDto.getGlobalStep())
-                    .orderPaymentStatus(clientOrderUpdateReqDto.getOrderPaymentStatus())
-                    .build();
+            if(!clientOrderUpdateReqDto.getDeliveryUpDates().isBlank()) {
+                // perfect time for creating a timeline
+                DeliveryTimeLineReqDto deliveryTimeLineReqDto = DeliveryTimeLineReqDto
+                        .builder()
+                        .clientOrderId(foundClientOrder.getId())
+                        .deliveryUpDates(clientOrderUpdateReqDto.getDeliveryUpDates())
+                        .globalStep(clientOrderUpdateReqDto.getGlobalStep())
+                        .orderPaymentStatus(clientOrderUpdateReqDto.getOrderPaymentStatus())
+                        .build();
 
-            DeliveryTimeLineResDto deliveryTimeLineResDto = deliveryTimeLineService.saveDeliveryTimeLine(deliveryTimeLineReqDto);
+                DeliveryTimeLineResDto deliveryTimeLineResDto = deliveryTimeLineService.saveDeliveryTimeLine(deliveryTimeLineReqDto);
+            }
+
+
+
+            // if the other timelines are not empty
+
+            if(!deliveryTimeLineReqDtoList.isEmpty()){
+                for (DeliveryTimeLineReqDto timeLineReqDto : deliveryTimeLineReqDtoList) {
+
+                    deliveryTimeLineService.saveDeliveryTimeLine(timeLineReqDto);
+                }
+
+            }
 
 
             return  "Order with id [ %s ] was successfully updated".formatted(clientOrderWithUpdates.getId());
