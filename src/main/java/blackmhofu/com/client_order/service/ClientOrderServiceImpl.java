@@ -4,6 +4,7 @@ import blackmhofu.com.auth.utils.CurrentLoggedInUser;
 import blackmhofu.com.client_order.dto.ClientOrderReqDto;
 import blackmhofu.com.client_order.dto.ClientOrderResDto;
 import blackmhofu.com.client_order.dto.ClientOrderUpdateReqDto;
+import blackmhofu.com.client_order.dto.ClientOrderWhatsAppResDto;
 import blackmhofu.com.client_order.mapper.OrderMapper;
 import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.repository.ClientOrderRepository;
@@ -18,6 +19,7 @@ import blackmhofu.com.users.model.User;
 import blackmhofu.com.users.service.UserServiceImpl;
 import blackmhofu.com.users.type.UserRole;
 import blackmhofu.com.utils.exceptions.ResourceNotFoundException;
+import blackmhofu.com.whatsapp.service.WhatsAppServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,10 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
     private CurrentLoggedInUser currentLoggedInUser;
 
 
+    @Autowired
+    private WhatsAppServiceImpl whatsAppService;
+
+
 
 
     @Override
@@ -68,6 +74,7 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
             UserReqDTO reqToBeAdded = UserReqDTO
                     .builder()
+
                     .name(clientOrderReqDto.getClientName())
                     .phoneNumber(clientOrderReqDto.getPhoneNumber())
                     .role(UserRole.CUSTOMER)
@@ -83,10 +90,12 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
         }
         ClientOrder clientOrderToBeSaved = ClientOrder
                 .builder()
+                .trackingNumber("DG"+UUID.randomUUID().toString().substring(0, 8))
                 .description(clientOrderReqDto.getDescription())
                 .address(clientOrderReqDto.getAddress())
                 .currentStep(clientOrderReqDto.getCurrentStep())
                 .globalStep(GlobalStep.PENDING)
+                .phoneNumber(customer.getPhoneNumber())
                 .orderPaymentStatus(OrderPaymentStatus.PENDING)
                 .agent(currentSessionUser)
                 .customer(customer)
@@ -106,6 +115,18 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
                 .build();
 
         DeliveryTimeLineResDto deliveryTimeLineResDto = deliveryTimeLineService.saveDeliveryTimeLine(deliveryTimeLineReqDto);
+
+
+
+        // sending to client
+
+
+
+        /*   start of   whatsapp notifications */
+        ClientOrderWhatsAppResDto clientOrderWhatsAppResDto = orderMapper.toWhatsUpResDto(saveClientOrder);
+        whatsAppService.sendWhatsAppMessage(clientOrderWhatsAppResDto);
+
+        /*   end of whatsapp notifications  */
 
       return  orderMapper.toDto(saveClientOrder);
     }
@@ -300,5 +321,20 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
         }
 
 
+    }
+
+    @Override
+    public ClientOrderResDto findByOrderNumber(String trackingNumber) {
+
+        Optional<ClientOrder>    optionalClientOrder = clientOrderRepository.findClientOrdersByTrackingNumber(trackingNumber);
+
+        return optionalClientOrder.map(clientOrder -> orderMapper.toDto(clientOrder)).orElse(null);
+    }
+
+    @Override
+    public List<ClientOrderResDto> findByPhoneNumber(String phoneNumber) {
+
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findClientOrdersByPhoneNumber(phoneNumber);
+        return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 }

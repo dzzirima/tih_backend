@@ -17,14 +17,7 @@
         <java.version>17</java.version>
     </properties>
 
-<!--    for whatsapp -->
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-<!--    ........ end of whatsapp ......-->
+
 
     <dependencies>
         <dependency>
@@ -53,14 +46,7 @@
         </dependency>
 
 
-<!--        whatsapp chatsapp-->
 
-        <dependency>
-            <groupId>com.github.Bindambc</groupId>
-            <artifactId>whatsapp-business-java-api</artifactId>
-            <version>v0.4.1</version>
-        </dependency>
-        <!--    ........ end of whatsapp ......-->
 
 <!--        authentication dependencies -->
         <dependency>

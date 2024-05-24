@@ -32,8 +32,14 @@ public interface IClientOrderService {
 
 
     // bulk operations
-
     public String bulkUpDate ( ClientOrderUpdateReqDto clientOrderUpdateTeqDto);
+
+
+
+    // for whatsapp operations
+    ClientOrderResDto findByOrderNumber (String deliveryId);
+
+    List<ClientOrderResDto> findByPhoneNumber(String phoneNumber);
 
 
 }

@@ -29,6 +29,7 @@ public class ClientOrder {
             generator = "UUID"
     )
     private UUID id;
+    private String  trackingNumber;
     private String notes ;
     private String description;
     private String address ;
