@@ -34,7 +34,10 @@ Clients (Delivery  Owner)
 -   ![]("https://photos.app.goo.gl/yYvH4Yu6ZEFeSZQc7" "client getting list of deliveries linked to their account " )
 
 - A client can optionally manually enter their delivery tracking number and they get the status of their delivery.
--  ![]("https://photos.app.goo.gl/yYvH4Yu6ZEFeSZQc7" "Client Entering  Delivery Tracking Number" )
+
+Client Receiving a newly created order updates
+
+![Client Delivery](https://learncodeonline.in/mascot.png "Cli" )
 
 
 
