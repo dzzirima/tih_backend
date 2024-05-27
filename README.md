@@ -103,6 +103,17 @@ In Delivery  guy context the Shop owner is the one who creates deliveries and gi
 - NextAuth ( For Authentication and Session Management)
 
 
+***
+Deployment 
+
+- Vercel
+- docker 
+- ec2
+- GitHub actions 
+
+
+
+
 
 
 
