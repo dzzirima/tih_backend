@@ -81,6 +81,30 @@ Customers
 
 
 
+***
+Tools used In This Project 
+
+Backend ( Core Application )
+-  Java 17
+- Spring Bot
+- Maven
+- MySQL
+
+Backend ( WhatsApp Chat Bot  ) 
+- Nodejs
+- javascript
+- WhatsApp Official Documentation
+
+Frontend ( Shop Owner )
+<br/>
+In Delivery  guy context the Shop owner is the one who creates deliveries and give tracking number to client .
+- NextJs
+- JavaScript 
+- NextAuth ( For Authentication and Session Management)
+
+
+
+
 
 
 
