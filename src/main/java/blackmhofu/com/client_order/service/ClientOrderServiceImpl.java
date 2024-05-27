@@ -24,10 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientOrderServiceImpl implements  IClientOrderService{
@@ -263,7 +261,7 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
 
         if(currentLoginUser.getRole() == UserRole.ADMIN){
-            List<ClientOrder > foundClientOrders = clientOrderRepository.findAll();
+            List<ClientOrder > foundClientOrders = clientOrderRepository.findAll().stream().sorted(Comparator.comparing(ClientOrder::getCreatedAt).reversed()).toList();
             return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
         }{
             return findByAgentId(currentLoginUser.getId());
@@ -286,7 +284,7 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
     @Override
     public List<ClientOrderResDto> findByAgentId(UUID agentId) {
-        List<ClientOrder > foundClientOrders = clientOrderRepository.findClientOrdersByAgent_Id(agentId);
+        List<ClientOrder > foundClientOrders = clientOrderRepository.findClientOrdersByAgent_Id(agentId).stream().sorted(Comparator.comparing(ClientOrder::getCreatedAt).reversed()).toList();
         return  foundClientOrders.stream().map(clientOrder -> orderMapper.toDto(clientOrder)).toList();
     }
 
