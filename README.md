@@ -1,6 +1,11 @@
 
 ### Official Documentation : Delivery Guy :15 April 2024
 
+[![gitHub license](https://img.shields.io/badge/license-BSD3-blue.svg)](./LICENSE)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/atsign-foundation/at_java/badge)](https://securityscorecards.dev/viewer/?uri=github.com/atsign-foundation/at_java&sort_by=check-score&sort_direction=desc)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8116/badge)](https://www.bestpractices.dev/projects/8116)
+
+
 
 ## motivation 
 One day, while I was reading reviews on TakeApp, I noticed that sellers were complaining about the lack of a delivery management system.
