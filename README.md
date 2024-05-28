@@ -134,6 +134,12 @@ Evolved to Delivery Guy Below is a basic Schematic Diagram we used to boot Strap
 
 
 
+### Heatmap Deliveries  distribution on a map/
+![ ](https://github.com/dzzirima/tih_backend/blob/main/src/main/resources/images/map.png  "Map_View" )
+
+
+
+
 
 
 
