@@ -122,7 +122,7 @@ One Thing i have learnt from software engineering is that systems always change 
 In my case i started with orders the system was more of order management by then it was called Delivery Express , but it 
 Evolved to Delivery Guy Below is a basic Schematic Diagram we used to boot Strap the building of the system .
 
-![](/Users/fanset/Documents/jah bless/WOS/TIH/src/main/resources/images/system_design.png  " Schematic Diagram " )
+![](https://github.com/dzzirima/tih_backend/blob/main/src/main/resources/images/system_design.png " Schematic Diagram " )
 
 
 
