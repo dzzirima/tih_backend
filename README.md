@@ -129,6 +129,10 @@ Evolved to Delivery Guy Below is a basic Schematic Diagram we used to boot Strap
 ### main dashboard
 ![ ](https://github.com/dzzirima/tih_backend/blob/main/src/main/resources/images/main_dash_board.png  "Main_DashBoard" )
 
+
+### Create New Delivery
+![ ](https://github.com/dzzirima/tih_backend/blob/main/src/main/resources/images/new_delivery.png  "New Deliveries" )
+
 ### Share Delivery on WhatsApp and Delivery Timelines 
 ![ ](https://github.com/dzzirima/tih_backend/blob/main/src/main/resources/images/time_lines.png  "Time_Lines" )
 
@@ -136,6 +140,10 @@ Evolved to Delivery Guy Below is a basic Schematic Diagram we used to boot Strap
 
 ### Heatmap Deliveries  distribution on a map/
 ![ ](https://github.com/dzzirima/tih_backend/blob/main/src/main/resources/images/map.png  "Map_View" )
+
+
+
+@David T Zirima
 
 
 
