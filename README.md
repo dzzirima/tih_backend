@@ -20,7 +20,7 @@ That's how Delivery Guy was born. However, before development began, I needed to
 </br>
 
 ### Demo
-You can access the web demo at https://tsc-admin.vercel.app/
+You can access the web demo at https://thi-frontend.vercel.app/
 ```
 The credential
 email: demo@deliveryguy.com
@@ -31,7 +31,7 @@ password: demo
 ***
 Shop owners
 </br>
-1. create you account at https://tsc-admin.vercel.app/
+1. create you account at https://thi-frontend.vercel.app/
 2. After that create your Deliveries
     </br>
    Add clients number so that they get immediate notications as thier order get created
