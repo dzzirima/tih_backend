@@ -10,8 +10,8 @@ public interface IWhatsAppService {
     ClientOrderResDto findByOrderNumber (String deliveryId);
 
     List<ClientOrderResDto> findByPhoneNumber(String phoneNumber);// we are finding all deliveries which belong to a client
-
-
     String sendWhatsAppMessage( ClientOrderWhatsAppResDto updatedOrder );
+
+    void sendUpDateViaWhatsApp(String deliveryId);
 
 }

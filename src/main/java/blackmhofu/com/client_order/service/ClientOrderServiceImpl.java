@@ -10,6 +10,7 @@ import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.repository.ClientOrderRepository;
 import blackmhofu.com.client_order.type.GlobalStep;
 import blackmhofu.com.client_order.type.OrderPaymentStatus;
+import blackmhofu.com.config.WhatsAppConfig;
 import blackmhofu.com.delivery_time_lines.dto.DeliveryTimeLineReqDto;
 import blackmhofu.com.delivery_time_lines.dto.DeliveryTimeLineResDto;
 import blackmhofu.com.delivery_time_lines.service.DeliveryTimeLineServiceImpl;
@@ -48,6 +49,10 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
     @Autowired
     private WhatsAppServiceImpl whatsAppService;
+
+
+    @Autowired
+    private WhatsAppConfig whatsAppConfig;
 
 
 
@@ -203,9 +208,7 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
 
         if(changes){
             ClientOrder clientOrderWithUpdates = clientOrderRepository.save(foundClientOrder);
-
-
-
+            whatsAppConfig.sendWhatsAppUpDate(foundClientOrder.getTrackingNumber());
 
             if(!clientOrderUpdateReqDto.getDeliveryUpDates().isBlank()) {
                 // perfect time for creating a timeline
@@ -220,17 +223,22 @@ public class ClientOrderServiceImpl implements  IClientOrderService{
                 DeliveryTimeLineResDto deliveryTimeLineResDto = deliveryTimeLineService.saveDeliveryTimeLine(deliveryTimeLineReqDto);
             }
 
-
-
             // if the other timelines are not empty
 
             if(!deliveryTimeLineReqDtoList.isEmpty()){
                 for (DeliveryTimeLineReqDto timeLineReqDto : deliveryTimeLineReqDtoList) {
 
                     deliveryTimeLineService.saveDeliveryTimeLine(timeLineReqDto);
+
+
                 }
 
             }
+
+
+            // lets send the changes to user
+
+
 
 
             return  "Order with id [ %s ] was successfully updated".formatted(clientOrderWithUpdates.getId());

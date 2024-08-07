@@ -2,7 +2,9 @@ package blackmhofu.com.whatsapp.service;
 
 import blackmhofu.com.client_order.dto.ClientOrderResDto;
 import blackmhofu.com.client_order.dto.ClientOrderWhatsAppResDto;
+import blackmhofu.com.client_order.model.ClientOrder;
 import blackmhofu.com.client_order.service.ClientOrderServiceImpl;
+import blackmhofu.com.config.WhatsAppConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,10 @@ public class WhatsAppServiceImpl implements  IWhatsAppService{
 
     @Autowired
     ClientOrderServiceImpl clientOrderService ;
+
+
+    @Autowired
+    private WhatsAppConfig whatsAppConfig;
     @Override
     public ClientOrderResDto findByOrderNumber(String deliveryId) {
         return  clientOrderService.findByOrderNumber(deliveryId);
@@ -41,25 +47,27 @@ public class WhatsAppServiceImpl implements  IWhatsAppService{
 
         try{
 
-
-            // Convert object to JSON string using a library like Jackson
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonString = mapper.writeValueAsString(updatedOrder);
+            whatsAppConfig.sendWhatsAppUpDate("DGdeb8acfc");
 
 
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(WHATSAPP_URL))
-                        .POST(HttpRequest.BodyPublishers.ofString(jsonString, StandardCharsets.UTF_8))
-                        .header("Content-Type", "application/json")
-                        .build();
-
-            CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder()
-                    .build()
-                    .sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-
-            System.out.println("Status Code: " + response.get().statusCode());
-            System.out.println("Response Body: " + response.get().body());
+//            // Convert object to JSON string using a library like Jackson
+//            ObjectMapper mapper = new ObjectMapper();
+//            String jsonString = mapper.writeValueAsString(updatedOrder);
+//
+//
+//                HttpRequest request = HttpRequest.newBuilder()
+//                        .uri(URI.create(WHATSAPP_URL))
+//                        .POST(HttpRequest.BodyPublishers.ofString(jsonString, StandardCharsets.UTF_8))
+//                        .header("Content-Type", "application/json")
+//                        .build();
+//
+//            CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder()
+//                    .build()
+//                    .sendAsync(request, HttpResponse.BodyHandlers.ofString());
+//
+//
+//            System.out.println("Status Code: " + response.get().statusCode());
+//            System.out.println("Response Body: " + response.get().body());
 
         } catch (Exception e){
 
@@ -69,5 +77,14 @@ public class WhatsAppServiceImpl implements  IWhatsAppService{
 
 
         return null;
+    }
+
+    @Override
+    public void sendUpDateViaWhatsApp(String deliveryId) {
+
+//        ClientOrderResDto foundOrder = findByOrderNumber(deliveryId);
+
+        whatsAppConfig.sendWhatsAppUpDate("DGdeb8acfc");
+
     }
 }

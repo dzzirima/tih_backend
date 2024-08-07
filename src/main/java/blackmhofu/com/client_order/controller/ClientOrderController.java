@@ -54,7 +54,6 @@ public class ClientOrderController {
         }
     }
 
-
     @GetMapping("byId/{orderId}")
     public ResponseEntity<?> findClientOrderById(
             @PathVariable UUID orderId
