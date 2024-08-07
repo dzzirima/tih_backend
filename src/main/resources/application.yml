@@ -11,6 +11,11 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:david1311}
 
+    # this is to connect remote db on local but when deploying leave it commented
+#    url: jdbc:mysql://161.35.71.73:${DB_PORT:3307}/tih?createDatabaseIfNotExist=true
+#    username: ${DB_USERNAME:root}
+#    password: ${DB_PASSWORD:gen123}
+
   jpa:
     hibernate:
       ddl-auto: update
