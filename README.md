@@ -10,6 +10,7 @@
 ## motivation 
 One day, while I was reading reviews on TakeApp, I noticed that sellers were complaining about the lack of a delivery management system.
 This resonated with me because of the current situation in Zimbabwe, where small shop owners struggle to deliver their products efficiently to customers.
+
 Another challenge is that buyers often need internet access, which can be limited in Zimbabwe. 
 
 This inspired me to create software that allows people to track their orders directly on WhatsApp.
